@@ -1,7 +1,11 @@
 import MainHeading from "@/components/main-heading/MainHeading";
 import { Menu } from "@/components/food-order";
+import { getBestSellers } from "@/server";
 
-const BestSellersSection = () => {
+async function BestSellersSection() {
+
+  const bastSellers = await getBestSellers(3);
+
   return (
     <section className="section-gap container mx-auto px-4 sm:px-6 lg:px-8">
       <MainHeading
@@ -18,7 +22,7 @@ const BestSellersSection = () => {
         className="mb-10 md:mb-14 lg:mb-16"
         subtitleClassName="text-gray-600 dark:text-gray-300"
       />
-      <Menu/>
+      <Menu items={bastSellers} />
     </section>
   );
 };

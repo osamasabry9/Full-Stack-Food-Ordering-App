@@ -15,35 +15,14 @@ import {
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-
-import { TMenuItem } from "@/types";
 import { formatCurrency } from "@/lib/formatters";
 
-type TSize = {
-  id: number;
-  name: string;
-  price: number;
-};
+import { TProductWithRelations } from "@/types";
+import { Extra, Size } from "@prisma/client";
 
-type TExtra = {
-  id: number;
-  name: string;
-  price: number;
-};
 
-const ExtrasDummy: TExtra[] = [
-  { id: 1, name: "Extra cheese", price: 2 },
-  { id: 2, name: "Extra tomato", price: 1 },
-];
 
-const SizesDummy: TSize[] = [
-  { id: 1, name: "Small", price: 8 },
-  { id: 2, name: "Medium", price: 10 },
-  { id: 3, name: "Large", price: 12 },
-  { id: 4, name: "Extra Large", price: 14 },
-];
-
-function OrderNowButton({ item }: { item: TMenuItem }) {
+function OrderNowButton({ item }: { item: TProductWithRelations }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -58,8 +37,8 @@ function OrderNowButton({ item }: { item: TMenuItem }) {
       <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto">
         {/* Image and Text */}
         <DialogHeader className="flex items-center">
-          <Image src={item.image} alt={item.title} width={200} height={200} />
-          <DialogTitle>{item.title}</DialogTitle>
+          <Image src={item.image} alt={item.name} width={200} height={200} />
+          <DialogTitle>{item.name}</DialogTitle>
           <DialogDescription className="text-center">
             {item.description}
           </DialogDescription>
@@ -69,14 +48,14 @@ function OrderNowButton({ item }: { item: TMenuItem }) {
           <div className="space-y-4 text-center">
             <Label htmlFor="pick-size">Pick your size</Label>
             <PickSize
-              sizes={SizesDummy}
+              sizes={item.sizes}
               item={item}
-              selectedSize={SizesDummy[0]}
+              selectedSize={item.sizes[0]}
             />
           </div>
           <div className="space-y-4 text-center">
             <Label htmlFor="add-extras">Any extras?</Label>
-            <Extras extras={ExtrasDummy} />
+            <Extras extras={item.extras} />
           </div>
         </div>
 
@@ -97,9 +76,9 @@ function PickSize({
   item,
   selectedSize,
 }: {
-  sizes: TSize[];
-  selectedSize: TSize;
-  item: TMenuItem;
+  sizes: Size[];
+  selectedSize: Size;
+  item: TProductWithRelations;
 }) {
   return (
     <RadioGroup defaultValue="comfortable">
@@ -114,7 +93,7 @@ function PickSize({
             id={size.id.toString()}
           />
           <Label htmlFor={size.id.toString()}>
-            {size.name} {formatCurrency(size.price + item.price)}
+            {size.name} {formatCurrency(size.price + item.basePrice)}
           </Label>
         </div>
       ))}
@@ -122,8 +101,10 @@ function PickSize({
   );
 }
 
-function Extras({ extras }: { extras: TExtra[] }) {
-  const handleExtra = (extra: TExtra) => {};
+function Extras({ extras }: { extras: Extra[] }) {
+  const handleExtra = (extra: Extra) => {
+    console.log(extra);
+  };
   return extras.map((extra) => (
     <div
       key={extra.id}
