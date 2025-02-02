@@ -1,4 +1,4 @@
-import {getBestSellers} from "@/server/db/products";
+import {getBestSellers, getProductsByCategory} from "@/server/db/products";
 
 
-export { getBestSellers };
+export { getBestSellers, getProductsByCategory };
