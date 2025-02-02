@@ -2,7 +2,7 @@ import { cache } from "@/lib/cache";
 import { db } from "@/lib/prisma";
 
 export const getBestSellers = cache(
-  () => {
+  (limit?: number ) => {
     const bestSellers = db.product.findMany({
       where: {
         orders: {
@@ -18,6 +18,7 @@ export const getBestSellers = cache(
         sizes: true,
         extras: true,
       },
+      take: limit,
     });
     return bestSellers;
   },
