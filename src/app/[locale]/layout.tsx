@@ -3,7 +3,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer/Footer";
-import ReduxProvider from "../provider/ReduxProvider";
+import ReduxProvider from "../../provider/ReduxProvider";
 
 const roboto = Roboto({
   subsets: ["latin"],
