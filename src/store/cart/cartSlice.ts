@@ -7,9 +7,11 @@ type CartState = {
   items: TCartItem[];
 };
 
+const InitialCartItems = localStorage.getItem("cartItems");
+
 // Initial state
 const initialState: CartState = {
-  items: [],
+  items: InitialCartItems ? JSON.parse(InitialCartItems) : [],
 };
 
 // Helper function to find an item index by ID
