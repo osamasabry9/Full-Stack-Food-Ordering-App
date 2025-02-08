@@ -1,9 +1,9 @@
 import { formatCurrency } from "@/lib/formatters";
 import Image from "next/image";
 import React from "react";
-import OrderNowButton from "./OrderNowButton.2";
 
 import { TProductWithRelations } from "@/types";
+import OrderNowButton from "../orderNow/OrderNowButton";
 const MenuItem = ({ product }: { product: TProductWithRelations }) => {
   const {name, description, basePrice, image } = product;
 
