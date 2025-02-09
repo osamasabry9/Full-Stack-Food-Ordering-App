@@ -8,6 +8,7 @@ import { useAppSelector } from "@/store/hooks";
 import { selectCartItems } from "@/store/cart/cartSlice";
 import { useEffect, useMemo } from "react";
 import { debounce } from "@/lib/debounce";
+import { useParams } from "next/navigation";
 
 const CartButton = () => {
   const cartItems = useAppSelector(selectCartItems);
@@ -19,6 +20,7 @@ const CartButton = () => {
       }, 500),
     []
   );
+  const { locale } = useParams();
 
   useEffect(() => {
     persistCart(cartItems);
@@ -26,7 +28,7 @@ const CartButton = () => {
 
   return (
     <Link
-      href={`/${Routes.CART}`}
+      href={`/${locale}/${Routes.CART}`}
       className="relative block group"
       aria-label={`Cart (${totalQuantity} items)`}
     >
