@@ -1,34 +1,34 @@
-import { Routes } from '@/constants/enums'
-import React from 'react'
-import MainHeading from '../main-heading/MainHeading'
+import { Routes } from "@/constants/enums";
+import React from "react";
+import MainHeading from "../main-heading/MainHeading";
+import { getCurrentLocal } from "@/lib/getCurrentLocal";
+import getTrans from "@/lib/translation";
 
-function About() {
+async function About() {
+  const locale = await getCurrentLocal();
+  const { home } = await getTrans(locale);
+  const { about } = home;
+
   return (
-    <section className='section-gap text-center' id={Routes.ABOUT}>
+    <section className="section-gap text-center" id={Routes.ABOUT}>
       <MainHeading
         titleChildren={
           <span className="inline-block">
-            About{" "}
+            {about.aboutUs.split(" ")[0]}{" "}
             <span className="bg-gradient-to-r from-primary to-primary/10 bg-clip-text text-transparent">
-              Us
+              {about.aboutUs.split(" ")[1]}
             </span>
           </span>
         }
-        subtitle="We are more than multiple service"
+        subtitle={about.ourStory}
       />
-      <div className='text-accent max-w-md mx-auto mt-4 flex flex-col gap-4'>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. In, quis mollitia! Id quibusdam voluptatum, sint libero architecto pariatur rem, neque eius cumque iure saepe, perspiciatis doloremque iste. Deleniti, tempore enim?
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. In, quis mollitia! Id quibusdam voluptatum, sint libero architecto pariatur rem, neque eius cumque iure saepe, perspiciatis doloremque iste. Deleniti, tempore enim?
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. In, quis mollitia! Id quibusdam voluptatum, sint libero architecto pariatur rem, neque eius cumque iure saepe, perspiciatis doloremque iste. Deleniti, tempore enim?
-        </p>
+      <div className="text-accent max-w-md mx-auto mt-4 flex flex-col gap-4">
+        <p>{about.descriptions.one}</p>
+        <p>{about.descriptions.two}</p>
+        <p>{about.descriptions.three}</p>
       </div>
     </section>
-    )
+  );
 }
 
-export default About
+export default About;

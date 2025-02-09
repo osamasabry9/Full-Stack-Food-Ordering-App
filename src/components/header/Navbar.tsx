@@ -4,27 +4,34 @@ import Link from "../link";
 import { Button, buttonVariants } from "../ui/button";
 import { Routes } from "@/constants/enums";
 import { Menu, XIcon } from "lucide-react";
+import { useParams, usePathname } from "next/navigation";
 
-const links = [
-  {
-    id: 1,
-    title: "Menu",
-    href: Routes.MENU,
-  },
-  {
-    id: 2,
-    title: "About",
-    href: Routes.ABOUT,
-  },
-  {
-    id: 3,
-    title: "Contact",
-    href: Routes.CONTACT,
-  },
-];
-
-const Navbar = () => {
+const Navbar = ({
+  translations,
+}: {
+  translations: { [key: string]: string };
+}) => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const links = [
+    {
+      id: 1,
+      title: translations["menu"],
+      href: Routes.MENU,
+    },
+    {
+      id: 2,
+      title: translations["about"],
+      href: Routes.ABOUT,
+    },
+    {
+      id: 3,
+      title: translations["contact"],
+      href: Routes.CONTACT,
+    },
+  ];
+
+  const { locale } = useParams();
+  const pathName = usePathname();
 
   return (
     <nav className="flex flex-1 justify-end">
@@ -41,7 +48,7 @@ const Navbar = () => {
       <ul
         className={`fixed lg:static ${
           isOpenMenu ? "left-0  z-50" : "-left-full"
-        } top-0 px-10 py-20 lg:p-0 bg-background lg:bg-transparent transition-all duration-200 h-full lg:h-auto flex-col lg:flex-row w-full lg:w-auto flex items-start lg:items-center gap-10`}
+        } top-0 px-8 py-20 lg:p-0 bg-background lg:bg-transparent transition-all duration-200 h-full lg:h-auto flex-col lg:flex-row w-full lg:w-auto flex items-start lg:items-center gap-8`}
       >
         <Button
           variant="secondary"
@@ -55,8 +62,10 @@ const Navbar = () => {
         {links.map((link) => (
           <li key={link.id}>
             <Link
-              href={link.href}
-              className={`hover:text-primary duration-200 transition-colors font-semibold `}
+              href={`/${locale}/${link.href}`}
+              className={`hover:text-primary duration-200 transition-colors font-semibold ${
+                pathName === `/${locale}/${link.href}` && "text-primary"
+              }`}
             >
               {link.title}
             </Link>
@@ -64,12 +73,12 @@ const Navbar = () => {
         ))}
         <li>
           <Link
-            href={Routes.AUTH}
+            href={`/${locale}/${Routes.AUTH}`}
             className={` ${buttonVariants({
               size: "lg",
             })} lg:!px-8 !rounded-full font-semibold`}
           >
-            Sign In
+            {translations["login"]}
           </Link>
         </li>
       </ul>

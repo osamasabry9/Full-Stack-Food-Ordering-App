@@ -7,11 +7,21 @@ type CartState = {
   items: TCartItem[];
 };
 
-const InitialCartItems = localStorage.getItem("cartItems");
+const safelyInitializeCart = (): TCartItem[] => {
+  if (typeof window === 'undefined') return []; // Server-side
+  try {
+    const items = localStorage.getItem("cartItems");
+    return items ? JSON.parse(items) : [];
+  } catch (error) {
+    console.error("Error loading cart from localStorage:", error);
+    return [];
+  }
+};
+
 
 // Initial state
 const initialState: CartState = {
-  items: InitialCartItems ? JSON.parse(InitialCartItems) : [],
+  items: safelyInitializeCart(),
 };
 
 // Helper function to find an item index by ID

@@ -1,12 +1,16 @@
 import React from "react";
 import MenuItem from "./MenuItem";
 import { TProductWithRelations } from "@/types";
+import { getCurrentLocal } from "@/lib/getCurrentLocal";
+import getTrans from "@/lib/translation";
 
 type TProps = {
   items: TProductWithRelations[];
 };
 
- function Menu({ items }: TProps) {
+const Menu = async ({ items }: TProps) => {
+  const locale = await getCurrentLocal();
+  const { noProductsFound } = await getTrans(locale);
 
   return items.length > 0 ? (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -19,7 +23,9 @@ type TProps = {
         </div>
       ))}
     </div>
-  ) : <p className="text-center text-muted-foreground" >No products available.</p>;
+  ) : (
+    <p className="text-center text-muted-foreground">{noProductsFound}</p>
+  );
 };
 
 export default Menu;
