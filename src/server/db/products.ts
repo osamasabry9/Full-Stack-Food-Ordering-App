@@ -23,7 +23,7 @@ export const getBestSellers = cache(
     return bestSellers;
   },
   ["best-sellers"],
-  { revalidate: 3600 }
+  { revalidate:  3600 * 60  }
 );
 
 
@@ -42,5 +42,5 @@ export const getProductsByCategory = cache(
     return products;
   },
   ["products-by-category"],
-  { revalidate: 3600 }
+  { revalidate: 3600 * 60  }
 );
